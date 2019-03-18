@@ -1,0 +1,24 @@
+#!/bin/bash
+
+FAIL=0
+
+go build proxy.go
+go build echo.go
+
+PORT="1331" EXTRA_HEADER="PROXY_1" PROXY_TO="http://localhost:1332" ./proxy &
+PORT="1332" EXTRA_HEADER="PROXY_2" PROXY_TO="http://localhost:1333" ./proxy &
+PORT="1333" EXTRA_HEADER="PROXY_3" PROXY_TO="http://localhost:1334" ./proxy &
+PORT="1334" EXTRA_HEADER="PROXY_4" PROXY_TO="http://localhost:1335" ./proxy &
+PORT="1335" EXTRA_HEADER="PROXY_5" PROXY_TO="http://localhost:1336" ./proxy &
+PORT="1336" EXTRA_HEADER="PROXY_6" PROXY_TO="http://localhost:1337" ./proxy &
+PORT="1337" EXTRA_HEADER="PROXY_7" PROXY_TO="http://localhost:1338" ./proxy &
+PORT="1338" EXTRA_HEADER="PROXY_8" PROXY_TO="http://localhost:1339" ./proxy &
+PORT="1339" EXTRA_HEADER="PROXY_9" PROXY_TO="http://localhost:1340" ./proxy &
+PORT="1340" EXTRA_HEADER="PROXY_10" PROXY_TO="http://localhost:1330" ./proxy &
+
+./echo &
+
+trap 'kill $(jobs -p)' INT
+trap 'kill $(jobs -p)' EXIT
+
+wait
